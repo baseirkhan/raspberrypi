@@ -1,0 +1,15 @@
+python3 -c "
+import sounddevice as sd
+import numpy as np
+
+def callback(indata, frames, time, status):
+    volume = int(np.linalg.norm(indata) * 10)
+    bar = '█' * volume
+    print(f'Volume: {bar:<50}', end='\r')
+
+print('Speak into mic - bars should move...')
+print('Press Ctrl+C to stop')
+with sd.InputStream(device=1, channels=1, samplerate=16000, callback=callback):
+    while True:
+        sd.sleep(100)
+"
